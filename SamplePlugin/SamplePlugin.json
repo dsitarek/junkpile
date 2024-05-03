@@ -1,12 +1,13 @@
 {
-  "Author": "your name here",
-  "Name": "Sample Plugin",
-  "Punchline": "A short one-liner that shows up in /xlplugins.",
-  "Description": "A description that shows up in /xlplugins. List any major slash-command(s).",
+  "Author": "Senah",
+  "Name": "Junkpile",
+  "Punchline": "Because why take hours to clear inventory slots SE...",
+  "Description": "Allows you to mark items as junk then discard them.",
   "ApplicableVersion": "any",
   "Tags": [
-    "sample",
-    "plugin",
-    "goats"
+
+    "trash",
+    "discard",
+    "junk"
   ]
 }

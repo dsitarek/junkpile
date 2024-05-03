@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="Dalamud.Plugin.Bootstrap.targets"/>
+  <Import Project="Dalamud.Plugin.Bootstrap.targets" />
 
   <PropertyGroup>
     <Version>0.0.0.1</Version>
@@ -15,5 +15,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>false</Visible>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ClickLib">
+      <HintPath>..\..\ClickLib\ClickLib\bin\Debug\ClickLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
