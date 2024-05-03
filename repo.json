@@ -1,4 +1,5 @@
-{
+[
+    {
     "Author": "Senah",
     "Name": "Junkpile"
     "Punchline": "Because why take hours to clear inventory slots SE...",
@@ -26,4 +27,5 @@
     "DownloadCount": 1,
     "LastUpdate": 1714768560,
     "AssemblyVersion": "1.0",
-}
+    }
+]
