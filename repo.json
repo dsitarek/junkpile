@@ -9,23 +9,14 @@
     "AssemblyVersion": "1.0",
     "RepoUrl": "https://github.com/dsitarek/junkpile",
     "ApplicableVersion": "any",
-    "CategoryTags": [
-
-        "trash",
-        "discard",
-        "junk"
-    ],
     "DalamudApiLevel": 9,
     "IconUrl": "",
-    "ImageUrls": [
-            ""
-        ],
     "IsHide": "False",
     "IsTestingExclusive": "False",
     "DownloadLinkInstall": "https://github.com/dsitarek/junkpile/releases/download/initial/junkpile1.0.zip",
     "DownloadLinkUpdate": "https://github.com/dsitarek/junkpile/releases/download/initial/junkpile1.0.zip",
     "DownloadCount": 1,
     "LastUpdate": 1714768560,
-    "AssemblyVersion": "1.0",
+    "AssemblyVersion": "1.0"
     }
 ]
