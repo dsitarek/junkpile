@@ -3,8 +3,7 @@ using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
-using SamplePlugin.Windows;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using Junkpile.Windows;
 using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System.Collections.Generic;
@@ -13,8 +12,6 @@ using Dalamud.Game.Gui.ContextMenu;
 using System;
 using System.Linq;
 using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Interface.ImGuiNotification;
-using Dalamud.Interface.ImGuiNotification.EventArgs;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -22,7 +19,7 @@ using System.Runtime.InteropServices;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using ClickLib.Clicks;
 using System.Threading;
-namespace SamplePlugin;
+namespace Junkpile;
 
 public sealed class Plugin : IDalamudPlugin
 {
@@ -35,7 +32,7 @@ public sealed class Plugin : IDalamudPlugin
     private IGameGui GameUI { get; init; }
     public Configuration Configuration { get; init; }
 
-    public readonly WindowSystem WindowSystem = new("SamplePlugin");
+    public readonly WindowSystem WindowSystem = new("Junkpile");
     private ConfigWindow ConfigWindow { get; init; }
     private MainWindow MainWindow { get; init; }
     private List<InventoryItem> Junkpile { get; init; }
@@ -121,16 +118,6 @@ public sealed class Plugin : IDalamudPlugin
             OnClicked = (MenuItemClickedArgs a) =>
             {
                 ToggleMainUI();
-                return;
-            }
-        });
-
-        contextMenu.AddMenuItem(ContextMenuType.Inventory, new MenuItem()
-        {
-            Name = "Discard junkpile",
-            OnClicked = (MenuItemClickedArgs a) =>
-            {
-                DiscardItems();
                 return;
             }
         });
