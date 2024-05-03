@@ -13,5 +13,7 @@
         "junk"
     ],
     "RepoUrl": "https://github.com/dsitarek/junkpile",
-    "DalamudApiLevel": 9
+    "DalamudApiLevel": 9,
+    "DownloadLinkInstall": "https://github.com/dsitarek/junkpile/releases/download/initial/junkpile1.0.zip",
+    "DownloadLinkUpdate": "https://github.com/dsitarek/junkpile/releases/download/initial/junkpile1.0.zip"
 }
