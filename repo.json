@@ -23,7 +23,6 @@
     "IsTestingExclusive": "False",
     "DownloadLinkInstall": "https://github.com/dsitarek/junkpile/releases/download/initial/junkpile1.0.zip",
     "DownloadLinkUpdate": "https://github.com/dsitarek/junkpile/releases/download/initial/junkpile1.0.zip",
-    "DownloadLinkTesting": "https://github.com/dsitarek/junkpile/releases/download/initial/junkpile1.0.zip",
     "DownloadCount": 1,
     "LastUpdate": 1714768560,
     "AssemblyVersion": "1.0",
