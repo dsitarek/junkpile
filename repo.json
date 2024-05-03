@@ -1,26 +1,30 @@
 {
     "Author": "Senah",
-    "Name": "Junkpile",
-    "InternalName": "Junkpile",
-    "AssemblyVersion": "1.0",
-    "TestingAssemblyVersion": "1.2.1.3",
+    "Name": "Junkpile"
     "Punchline": "Because why take hours to clear inventory slots SE...",
     "Description": "Allows you to mark items as junk then discard them.",
+    "Changelog": "",
+    "InternalName": "Junkpile",
+    "AssemblyVersion": "1.0",
+    "RepoUrl": "https://github.com/dsitarek/junkpile",
     "ApplicableVersion": "any",
-    "Tags": [
+    "CategoryTags": [
 
         "trash",
         "discard",
         "junk"
     ],
-    "RepoUrl": "https://github.com/dsitarek/junkpile",
     "DalamudApiLevel": 9,
+    "IconUrl": "",
+    "ImageUrls": [
+            ""
+        ],
     "IsHide": "False",
     "IsTestingExclusive": "False",
-    "DownloadCount": 1,
-    "LastUpdate": 1714768560,
     "DownloadLinkInstall": "https://github.com/dsitarek/junkpile/releases/download/initial/junkpile1.0.zip",
     "DownloadLinkUpdate": "https://github.com/dsitarek/junkpile/releases/download/initial/junkpile1.0.zip",
-    "DownloadLinkTesting": "https://github.com/dsitarek/junkpile/releases/download/initial/junkpile1.0.zip"
-    "IconUrl": ""
+    "DownloadLinkTesting": "https://github.com/dsitarek/junkpile/releases/download/initial/junkpile1.0.zip",
+    "DownloadCount": 1,
+    "LastUpdate": 1714768560,
+    "AssemblyVersion": "1.0",
 }
