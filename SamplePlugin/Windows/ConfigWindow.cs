@@ -40,20 +40,6 @@ public class ConfigWindow : Window, IDisposable
 
     public override void Draw()
     {
-        // can't ref a property, so use a local copy
-        var configValue = configuration.SomePropertyToBeSavedAndWithADefault;
-        if (ImGui.Checkbox("Random Config Bool", ref configValue))
-        {
-            configuration.SomePropertyToBeSavedAndWithADefault = configValue;
-            // can save immediately on change, if you don't want to provide a "Save and Close" button
-            configuration.Save();
-        }
-
-        var movable = configuration.IsConfigWindowMovable;
-        if (ImGui.Checkbox("Movable Config Window", ref movable))
-        {
-            configuration.IsConfigWindowMovable = movable;
-            configuration.Save();
-        }
+        ImGui.Text("No Config Options.");
     }
 }
