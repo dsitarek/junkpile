@@ -101,6 +101,38 @@ namespace Junkpile
             agentInventoryContext->DiscardItem(itemInfo, itemInfo->Container, itemInfo->Slot, agentInventoryContext->OwnerAddonId);
         }
 
+        //Not in use
+        public unsafe void QuickDiscard(ulong itemId, ushort container, uint slot)
+        {
+            bool hq = itemId > 1000000;
+            if (hq) itemId = itemId - 1000000;
+            if (!InventoryContainerArray.Contains(container))
+            {
+                chat.Print("Only items from Inventory Pages, Armoury Pages, Saddlebags, or Retainer Pages may be junked.");
+                return;
+            }
+            var manager = InventoryManager.Instance();
+            var inventory = *manager->GetInventoryContainer((InventoryType)container);
+            SeString? itemStringInfo = "";
+
+            for (var i = 0; i < inventory.Size; i++)
+            {
+                if (inventory.Items[i].ItemID == itemId && inventory.Items[i].Slot == slot)
+                {
+                    var itemInfo = *inventory.GetInventorySlot(inventory.Items[i].Slot);
+                    Discard(itemInfo);
+                    if (Junk.Any(x => x.ItemID == itemInfo.ItemID && x.Slot == itemInfo.Slot))
+                    {
+                        SeStringBuilder sb = new SeStringBuilder();
+                        sb.AddItemLink((uint)itemId, hq);
+                        Junk.Remove(itemInfo);
+                        JunkItemNames.Remove(sb.ToString());
+                    }
+                }
+                continue;
+            }
+        }
+
         public void ClearJunkpile()
         {
             Junk.Clear();
