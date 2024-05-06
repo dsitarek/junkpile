@@ -66,7 +66,7 @@ public sealed class Plugin : IDalamudPlugin
 
         contextMenu.AddMenuItem(ContextMenuType.Inventory, new MenuItem()
         {
-            Name = "Add/remove to/from junkpile",
+            Name = "Add/remove to/from Junkpile",
             Priority = -2,
             PrefixChar = 'J',
             PrefixColor = 540,
@@ -78,18 +78,19 @@ public sealed class Plugin : IDalamudPlugin
                     var slot = item.TargetItem.Value.InventorySlot;
                     var container = (ushort)item.TargetItem.Value.ContainerType;
                     Junkpile.AddRemoveJunkItem(itemId, container, slot);
-                } else
+                }
+                else
                 {
                     chat.Print("Item can not be junked.");
                 }
                 return;
             }
-        }); ; ; ;
+        });
 
         contextMenu.AddMenuItem(ContextMenuType.Inventory, new MenuItem()
         {
             Name = "View Junkpile",
-            Priority= -1,
+            Priority= 1,
             PrefixChar = 'J',
             PrefixColor = 540,
             OnClicked = (MenuItemClickedArgs a) =>
