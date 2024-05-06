@@ -35,22 +35,8 @@ public sealed class Plugin : IDalamudPlugin
     public readonly WindowSystem WindowSystem = new("Junkpile");
     private ConfigWindow ConfigWindow { get; init; }
     private MainWindow MainWindow { get; init; }
-    private List<InventoryItem> Junkpile { get; init; }
-    private List<string> JunkItemNames { get; init; }
+    private Junkpile Junkpile { get; init; }
     private IAddonLifecycle AddonLifecycle {  get; init; }
-    private bool isDiscarding {  get; set; }
-    private SemaphoreSlim signal;
-
-    private static readonly int[] InventoryContainerArray = [0, 1, 2, 3];
-
-    private unsafe AgentInventoryContext* agentInventoryContext;
-    private unsafe InventoryManager* inventoryManager;
-
-    private unsafe void SetContexts()
-    {
-        agentInventoryContext = AgentInventoryContext.Instance();
-        inventoryManager = InventoryManager.Instance();
-    }
 
     private unsafe void SelectYesNoSetup(AddonEvent type, AddonArgs args)
     {
@@ -68,13 +54,7 @@ public sealed class Plugin : IDalamudPlugin
             var flagsPtr = (ushort*)&yesButton->AtkComponentBase.OwnerNode->AtkResNode.NodeFlags;
             *flagsPtr ^= 1 << 5;
         }
-        if(isDiscarding) ClickSelectYesNo.Using(addon).Yes();
-    }
-
-    public void UpdateDiscardStatus(AddonEvent type, AddonArgs args)
-    {
-        signal.Release();
-        Chat.Print("release");
+        if(Junkpile.isDiscarding) ClickSelectYesNo.Using(addon).Yes();
     }
 
     public Plugin(
@@ -86,25 +66,25 @@ public sealed class Plugin : IDalamudPlugin
         CommandManager = commandManager;
         Chat = chat;
         GameUI = gui;
-        Junkpile = new List<InventoryItem>();
-        JunkItemNames = new List<string>();
         ContextMenu = contextMenu;
         AddonLifecycle = addonLc;
-        isDiscarding = false;
-        SetContexts();
-        signal = new SemaphoreSlim(0);
+        Junkpile = new Junkpile(chat);
 
         contextMenu.AddMenuItem(ContextMenuType.Inventory, new MenuItem()
         {
-            Name = "Add to junk",
+            Name = "Add/remove to/from junk",
             Priority = -2,
             OnClicked = (MenuItemClickedArgs a) =>
             {
                 if (a.Target is MenuTargetInventory item && item.TargetItem != null)
                 {
                     var itemId = item.TargetItem.Value.ItemId;
+                    var slot = item.TargetItem.Value.InventorySlot;
                     var container = (ushort)item.TargetItem.Value.ContainerType;
-                    AddItemToJunk(itemId, container);
+                    Junkpile.AddRemoveJunkItem(itemId, container, slot);
+                } else
+                {
+                    chat.Print("Only Inventory items can be junked.");
                 }
                 return;
             }
@@ -126,10 +106,10 @@ public sealed class Plugin : IDalamudPlugin
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
         Configuration.Initialize(PluginInterface);
         AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoSetup);
-        AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, "SelectYesno", UpdateDiscardStatus);
+        AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, "SelectYesno", Junkpile.DidDiscard);
 
         ConfigWindow = new ConfigWindow(this);
-        MainWindow = new MainWindow(this, JunkItemNames);
+        MainWindow = new MainWindow(this, Junkpile);
 
         WindowSystem.AddWindow(ConfigWindow);
         WindowSystem.AddWindow(MainWindow);
@@ -152,7 +132,7 @@ public sealed class Plugin : IDalamudPlugin
     public void Dispose()
     {
         WindowSystem.RemoveAllWindows();
-        signal.Dispose();
+        Junkpile.signal.Dispose();
         ConfigWindow.Dispose();
         MainWindow.Dispose();
 
@@ -164,64 +144,6 @@ public sealed class Plugin : IDalamudPlugin
         // in response to the slash command, just toggle the display status of our main ui
         ToggleMainUI();
 
-    }
-
-    private unsafe void AddItemToJunk(ulong itemId, ushort container)
-    {
-        bool hq = itemId > 1000000;
-        if (hq) itemId = itemId - 1000000;
-        if (!InventoryContainerArray.Contains(container)) return;
-        var manager = InventoryManager.Instance();
-        var inventory = *manager->GetInventoryContainer((InventoryType)container);
-        SeString? itemStringInfo = "";
-
-        for (var i = 0; i < inventory.Size; i++)
-        {
-            if (inventory.Items[i].ItemID == itemId)
-            {
-                var itemInfo = *inventory.GetInventorySlot(inventory.Items[i].Slot);
-                if(!Junkpile.Any(x => x.ItemID == itemInfo.ItemID))
-                {
-                    Junkpile.Add(itemInfo);
-                    SeStringBuilder sb = new SeStringBuilder();
-                    sb.AddItemLink((uint)itemId, hq);
-                    JunkItemNames.Add(sb.ToString());
-                    itemStringInfo = sb.Append(" added to junkpile.").BuiltString;
-
-                    var response = new XivChatEntry()
-                    {
-                        Message = itemStringInfo,
-                        Type = XivChatType.Debug
-
-                    };
-                    Chat.Print(response);
-                }
-            }
-            continue;
-        }
-    }
-    public async void DiscardItems()
-    {
-        isDiscarding = true;
-        var items = Junkpile;
-        //var invContext = AgentInventoryContext.Instance();
-        //var manager = InventoryManager.Instance();
-        foreach (var item in items)
-        {
-            Discard(item);
-            await signal.WaitAsync();
-        }
-        isDiscarding = false;
-        Junkpile.Clear();
-        JunkItemNames.Clear();
-    }
-
-    private unsafe void Discard(InventoryItem item)
-    {
-        var inventoryType = (InventoryType)item.LinkedInventoryType;
-        var inventory = *inventoryManager->GetInventoryContainer(item.Container);
-        var itemInfo = inventory.GetInventorySlot(item.Slot);
-        agentInventoryContext->DiscardItem(itemInfo, itemInfo->Container, itemInfo->Slot, agentInventoryContext->OwnerAddonId);
     }
 
     private void DrawUI() => WindowSystem.Draw();

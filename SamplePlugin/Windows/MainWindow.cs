@@ -10,12 +10,12 @@ namespace Junkpile.Windows;
 public class MainWindow : Window, IDisposable
 {
     private Plugin plugin;
-    private readonly List<string> junkItems;
+    private readonly Junkpile junkpile;
 
     // We give this window a hidden ID using ##
     // So that the user will see "My Amazing Window" as window title,
     // but for ImGui the ID is "My Amazing Window##With a hidden ID"
-    public MainWindow(Plugin plugin, List<string> itemsToDiscard)
+    public MainWindow(Plugin plugin, Junkpile junk)
         : base("Junkpile", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
     {
         SizeConstraints = new WindowSizeConstraints
@@ -25,16 +25,16 @@ public class MainWindow : Window, IDisposable
         };
 
         this.plugin = plugin;
-        junkItems = itemsToDiscard;
+        junkpile = junk;
     }
 
     public void Dispose() { }
 
     public override void Draw()
     {
-        if (junkItems.Any())
+        if (junkpile.JunkItemNames.Any())
         {
-            junkItems.ForEach(item =>
+            junkpile.JunkItemNames.ForEach(item =>
             {
                 ImGui.Text(item);
             });
@@ -42,7 +42,7 @@ public class MainWindow : Window, IDisposable
 
         if (ImGui.Button("Discard Junk Items"))
         {
-            plugin.DiscardItems();
+            junkpile.DiscardItems();
         }
     }
 }
