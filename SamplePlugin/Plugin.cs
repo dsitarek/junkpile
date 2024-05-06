@@ -4,21 +4,15 @@ using Dalamud.Plugin;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
 using Junkpile.Windows;
-using Dalamud.Game.Text;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using System.Collections.Generic;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Dalamud.Game.Gui.ContextMenu;
 using System;
-using System.Linq;
-using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using System.Runtime.InteropServices;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using ClickLib.Clicks;
-using System.Threading;
+
 namespace Junkpile;
 
 public sealed class Plugin : IDalamudPlugin
