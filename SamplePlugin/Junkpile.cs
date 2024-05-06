@@ -29,8 +29,9 @@ namespace Junkpile
         public List<string> JunkItemNames { get; set; }
         private unsafe InventoryManager* inventoryManager;
         private unsafe AgentInventoryContext* agentInventoryContext;
-        private static readonly int[] InventoryContainerArray = [0, 1, 2, 3];
-        private IChatGui chat;
+        //Inventory Pages, Armoury Pages, Saddlebags, Retainer Pages
+        private static readonly int[] InventoryContainerArray = [0, 1, 2, 3, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 4000, 4001, 4100, 4101, 10000, 10001, 10002, 10003, 10004, 10005, 10006];
+        private readonly IChatGui chat;
         public bool isDiscarding { get; set; }
         public SemaphoreSlim signal;
 
@@ -38,7 +39,11 @@ namespace Junkpile
         {
             bool hq = itemId > 1000000;
             if (hq) itemId = itemId - 1000000;
-            if (!InventoryContainerArray.Contains(container)) return;
+            if (!InventoryContainerArray.Contains(container))
+            {
+                chat.Print("Only items from Inventory Pages, Armoury Pages, Saddlebags, or Retainer Pages may be junked.");
+                return;
+            }
             var manager = InventoryManager.Instance();
             var inventory = *manager->GetInventoryContainer((InventoryType)container);
             SeString? itemStringInfo = "";
@@ -94,6 +99,12 @@ namespace Junkpile
             var inventory = *inventoryManager->GetInventoryContainer(item.Container);
             var itemInfo = inventory.GetInventorySlot(item.Slot);
             agentInventoryContext->DiscardItem(itemInfo, itemInfo->Container, itemInfo->Slot, agentInventoryContext->OwnerAddonId);
+        }
+
+        public void ClearJunkpile()
+        {
+            Junk.Clear();
+            JunkItemNames.Clear();
         }
 
         public void DidDiscard(AddonEvent type, AddonArgs args)

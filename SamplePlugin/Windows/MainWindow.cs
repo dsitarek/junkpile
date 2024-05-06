@@ -44,5 +44,10 @@ public class MainWindow : Window, IDisposable
         {
             junkpile.DiscardItems();
         }
+
+        if (ImGui.Button("Clear Junkpile"))
+        {
+            junkpile.ClearJunkpile();
+        }
     }
 }

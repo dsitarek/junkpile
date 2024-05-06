@@ -66,7 +66,7 @@ public sealed class Plugin : IDalamudPlugin
 
         contextMenu.AddMenuItem(ContextMenuType.Inventory, new MenuItem()
         {
-            Name = "Add/remove to/from junk",
+            Name = "Add/remove to/from junkpile",
             Priority = -2,
             OnClicked = (MenuItemClickedArgs a) =>
             {
@@ -117,7 +117,7 @@ public sealed class Plugin : IDalamudPlugin
 
         // This adds a button to the plugin installer entry of this plugin which allows
         // to toggle the display status of the configuration ui
-        PluginInterface.UiBuilder.OpenConfigUi += ToggleConfigUI;
+        //PluginInterface.UiBuilder.OpenConfigUi += ToggleConfigUI;
 
         // Adds another button that is doing the same but for the main ui of the plugin
         PluginInterface.UiBuilder.OpenMainUi += ToggleMainUI;
